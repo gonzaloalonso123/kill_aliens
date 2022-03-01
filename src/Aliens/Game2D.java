@@ -35,7 +35,6 @@ public class Game2D extends JPanel implements ActionListener {
 	int x_1 = 100;
 	int y_2 = 60;
 	int x_2 = 300;
-	Image background;
 	Timer timer;
 	Pj laser;
 	ArrayList<BolaFuego> bolas_laser;
@@ -44,6 +43,7 @@ public class Game2D extends JPanel implements ActionListener {
 	Image alienImage;
 	Image laserImage;
 	Image bolaImage;
+	Image background;
 
 	int puntuacion;
 	
@@ -52,8 +52,7 @@ public class Game2D extends JPanel implements ActionListener {
 		addKeyListener(new KeyP());
         setFocusable(true);
         requestFocusInWindow();
-		setPreferredSize(new Dimension(WIDTH, HEIGHT));
-		setBackground(Color.blue);		
+		setPreferredSize(new Dimension(WIDTH, HEIGHT));	
 		
 		bolas_laser = new ArrayList<BolaFuego>();
 		aliens = new ArrayList<Pj>();
@@ -71,6 +70,8 @@ public class Game2D extends JPanel implements ActionListener {
 	{
 		super.paint(g);
 		Graphics2D g2D = (Graphics2D) g;	
+		
+		g2D.drawImage(background, 0,0,null);
 		
 		g2D.drawImage(laserImage, laser.x, laser.y, null);
 		// g2D.drawImage(laserImage, laser.x + 70, laser.y, - 70, 70, null);
@@ -116,7 +117,7 @@ public class Game2D extends JPanel implements ActionListener {
 		actualizarLocLaser();
 		actualizarLocBolas();
 		checkColision();
-		generarAlienigena(1);
+		generarAlienigena(10);
 		repaint();
 	}
 	
@@ -192,6 +193,7 @@ public class Game2D extends JPanel implements ActionListener {
 	
 	public void loadImages()
 	{
+		background = new ImageIcon(getClass().getResource("/Images/espacio.jpeg")).getImage();
 		alienImage = new ImageIcon(getClass().getResource("/Images/alien_1.png")).getImage();
 		laserImage = new ImageIcon(getClass().getResource( "/Images/pistola_laser.png")).getImage();
 		bolaImage = new ImageIcon(getClass().getResource("/Images/bola_laser.png")).getImage();
