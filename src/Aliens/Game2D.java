@@ -22,23 +22,25 @@ public class Game2D extends JPanel implements ActionListener {
 
 	final int WIDTH = 1000;
 	final int HEIGHT = 600;
+	
 	double x_velocity_1 = 1;
 	double x_velocity_2 = 1;
 	double y_velocity_1 = 1;
 	double y_velocity_2 = 1;
-	
-	boolean gameOver = false;
-	
+
 	Action upAction;
 	Action downAction;
 	Action leftAction;
 	Action rightAction;
+	
 	int y_1 = 100;
 	int x_1 = 100;
 	int y_2 = 60;
 	int x_2 = 300;
+	
 	Timer timer;
 	Pj laser;
+	
 	ArrayList<BolaFuego> bolas_laser;
 	ArrayList<Pj> aliens;
 	
@@ -48,6 +50,8 @@ public class Game2D extends JPanel implements ActionListener {
 	Image background;
 
 	int puntuacion;
+	int nivel = 1; 
+	boolean gameOver = false;
 	
 	Game2D()
 	{	
@@ -79,23 +83,16 @@ public class Game2D extends JPanel implements ActionListener {
 		// g2D.drawImage(laserImage, laser.x + 70, laser.y, - 70, 70, null);
 		
 		for(Pj alien : aliens)
-		{
 			g2D.drawImage(alienImage, alien.x, alien.y, null);
-		}
-		
 		
 		g2D.setFont(new Font("Ink free", Font.BOLD, 70));
 		g2D.setColor(Color.white);
 		
 		if(!gameOver)
-		{
 			g2D.drawString("PUNTUACION: " + puntuacion, 250, 80);
-		}
 		else
-		{
 			g2D.drawString("HAS MUERTO: " + puntuacion, 250, 80);
-		}
-	
+		
 		bolas_laser.forEach((b) -> g2D.drawImage(bolaImage, b.x, b.y, null));
 	}
 
@@ -130,7 +127,7 @@ public class Game2D extends JPanel implements ActionListener {
 		actualizarLocBolas();
 		checkColision();
 		checkPlayerColision();
-		generarAlienigena(1);
+		generarAlienigena(nivel);
 		repaint();
 	}
 	
@@ -194,10 +191,13 @@ public class Game2D extends JPanel implements ActionListener {
 			}
 		});
 		
+		if(puntuacion % 50 == 0)
+		{
+			nivel++;
+		}
+		
 		aliens.removeIf(alien -> (alien.muerto));
 	}
-	
-	
 	
 	public class KeyP extends KeyAdapter
 	{
