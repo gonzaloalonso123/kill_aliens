@@ -50,8 +50,10 @@ public class Game2D extends JPanel implements ActionListener {
 	Image background;
 
 	int puntuacion;
-	int nivel = 1; 
+	double nivel = 1; 
 	boolean gameOver = false;
+	int balas;
+	int contadorBalas;
 	
 	Game2D()
 	{	
@@ -87,6 +89,11 @@ public class Game2D extends JPanel implements ActionListener {
 		
 		g2D.setFont(new Font("Ink free", Font.BOLD, 70));
 		g2D.setColor(Color.white);
+		
+		for(int i = 0; i < balas; i++)
+		{
+			g2D.drawImage(bolaImage, (10 + (i*20)), 550, null);
+		}
 		
 		if(!gameOver)
 			g2D.drawString("PUNTUACION: " + puntuacion, 250, 80);
@@ -128,6 +135,7 @@ public class Game2D extends JPanel implements ActionListener {
 		checkColision();
 		checkPlayerColision();
 		generarAlienigena(nivel);
+		balas();
 		repaint();
 	}
 	
@@ -187,16 +195,23 @@ public class Game2D extends JPanel implements ActionListener {
 				{
 					alien.muerto = true;
 					puntuacion ++;
+					if(puntuacion % 50 == 0)
+						nivel++;
 				}
 			}
 		});
 		
-		if(puntuacion % 50 == 0)
-		{
-			nivel++;
-		}
-		
+	
 		aliens.removeIf(alien -> (alien.muerto));
+	}
+	
+	public void balas()
+	{
+		contadorBalas++;
+		if(contadorBalas % 100 == 0 && balas < 3)
+		{
+			balas++;
+		}
 	}
 	
 	public class KeyP extends KeyAdapter
@@ -215,7 +230,11 @@ public class Game2D extends JPanel implements ActionListener {
 				laser.y_vel = 3;
 				break;
 			case KeyEvent.VK_SPACE:
-				bolas_laser.add(new BolaFuego(45, laser.y, 20, 0, "/Images/bola_laser.png"));
+				if(balas > 0)
+				{
+					bolas_laser.add(new BolaFuego(45, laser.y, 20, 0, "/Images/bola_laser.png"));
+					balas--;
+				}
 				break;
 			}	
 		}
